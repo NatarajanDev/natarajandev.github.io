@@ -1,1 +1,1100 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NatarajanDev | Full-Stack Development & Automation</title>
+
+<meta name="description" content="NatarajanDev provides reliable PHP, Python, React, API integration, AI and automation development support for businesses and web agencies.">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --navy: #0b1220;
+    --navy2: #111c30;
+    --blue: #2563eb;
+    --cyan: #38bdf8;
+    --orange: #f97316;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --border: rgba(148,163,184,.18);
+    --card: rgba(255,255,255,.045);
+    --white: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 80% 10%, rgba(37,99,235,.16), transparent 30%),
+        radial-gradient(circle at 10% 30%, rgba(249,115,22,.07), transparent 25%),
+        var(--navy);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: min(1120px, 92%);
+    margin: auto;
+}
+
+/* NAVIGATION */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11,18,32,.86);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -.5px;
+}
+
+.logo-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue), var(--orange));
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 900;
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.nav-contact {
+    padding: 9px 16px;
+    border: 1px solid rgba(56,189,248,.35);
+    border-radius: 8px;
+    color: white !important;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 680px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr .75fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #7dd3fc;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 12px #22c55e;
+}
+
+h1 {
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -3px;
+    color: var(--white);
+    margin-bottom: 24px;
+}
+
+.gradient-text {
+    background: linear-gradient(100deg, #60a5fa, #38bdf8, #fb923c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-text {
+    max-width: 650px;
+    color: var(--muted);
+    font-size: 19px;
+    line-height: 1.75;
+    margin-bottom: 32px;
+}
+
+.buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--blue), #1d4ed8);
+    color: white;
+    box-shadow: 0 8px 25px rgba(37,99,235,.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.03);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.08);
+}
+
+/* HERO CARD */
+
+.hero-card {
+    position: relative;
+}
+
+.code-card {
+    background: #080d17;
+    border: 1px solid rgba(96,165,250,.2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.4);
+}
+
+.code-header {
+    padding: 14px 17px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 7px;
+}
+
+.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #475569;
+}
+
+.code-body {
+    padding: 25px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 2;
+}
+
+.code-blue { color: #60a5fa; }
+.code-orange { color: #fb923c; }
+.code-green { color: #4ade80; }
+.code-white { color: #f8fafc; }
+
+/* STATS */
+
+.stats {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 34px 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    color: white;
+}
+
+.stat span {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* SECTIONS */
+
+section {
+    padding: 100px 0;
+}
+
+.section-label {
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    color: white;
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+}
+
+.section-intro {
+    max-width: 680px;
+    color: var(--muted);
+    margin-bottom: 45px;
+}
+
+/* SERVICES */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 14px;
+    transition: .25s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56,189,248,.3);
+    background: rgba(255,255,255,.065);
+}
+
+.icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: rgba(37,99,235,.15);
+    color: #60a5fa;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 9px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* PROJECTS */
+
+.projects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.project {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+}
+
+.project-number {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.project h3 {
+    color: white;
+    font-size: 21px;
+    margin: 10px 0;
+}
+
+.project p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 20px;
+}
+
+.tag {
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: rgba(37,99,235,.12);
+    color: #93c5fd;
+    font-size: 11px;
+}
+
+/* EXPERIENCE */
+
+.experience {
+    border-left: 2px solid rgba(56,189,248,.25);
+    padding-left: 28px;
+}
+
+.experience-item {
+    position: relative;
+    margin-bottom: 45px;
+}
+
+.experience-item::before {
+    content: "";
+    position: absolute;
+    left: -36px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 3px solid var(--navy);
+}
+
+.experience-date {
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.experience h3 {
+    color: white;
+    font-size: 20px;
+    margin: 5px 0;
+}
+
+.experience-company {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.experience p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 800px;
+}
+
+/* WHY */
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.why-item {
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255,255,255,.025);
+}
+
+.check {
+    color: #4ade80;
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+/* CTA */
+
+.cta {
+    text-align: center;
+    padding: 90px 30px;
+    border: 1px solid rgba(56,189,248,.2);
+    border-radius: 20px;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(37,99,235,.22), transparent 50%),
+        rgba(255,255,255,.025);
+}
+
+.cta .section-intro {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-email {
+    display: inline-block;
+    margin-top: 22px;
+    color: #7dd3fc;
+    font-size: 17px;
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* MOBILE */
+
+@media(max-width: 800px) {
+
+    .nav-links a:not(.nav-contact) {
+        display: none;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 80px 0;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .hero-card {
+        max-width: 600px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services-grid,
+    .projects,
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+
+    section {
+        padding: 70px 0;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 480px) {
+
+    h1 {
+        letter-spacing: -2px;
+    }
+
+    .hero-text {
+        font-size: 16px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav>
+<div class="container nav-inner">
+
+    <a href="#" class="logo">
+        <span class="logo-mark">ND</span>
+        NatarajanDev
+    </a>
+
+    <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact" class="nav-contact">Contact</a>
+    </div>
+
+</div>
+</nav>
+
+
+<!-- HERO -->
+
+<header class="hero">
+
+<div class="container hero-grid">
+
+    <div>
+
+        <div class="eyebrow">
+            <span class="status-dot"></span>
+            Available for selected projects
+        </div>
+
+        <h1>
+            Senior Developer.<br>
+            <span class="gradient-text">Smart Automation.</span>
+        </h1>
+
+        <p class="hero-text">
+            I help web agencies and businesses clear development backlogs,
+            maintain existing applications, integrate APIs and automate
+            repetitive workflows.
+        </p>
+
+        <div class="buttons">
+            <a href="#contact" class="btn btn-primary">
+                Start a Project →
+            </a>
+
+            <a href="https://github.com/NatarajanDev"
+               target="_blank"
+               class="btn btn-secondary">
+                View GitHub
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="hero-card">
+
+        <div class="code-card">
+
+            <div class="code-header">
+                <span class="circle"></span>
+                <span class="circle"></span>
+                <span class="circle"></span>
+            </div>
+
+            <div class="code-body">
+
+<span class="code-blue">developer</span> = {<br>
+
+&nbsp;&nbsp;<span class="code-white">experience</span>:
+<span class="code-green">"15+ years"</span>,<br>
+
+&nbsp;&nbsp;<span class="code-white">backend</span>:
+<span class="code-green">["PHP", "MySQL"]</span>,<br>
+
+&nbsp;&nbsp;<span class="code-white">modern</span>:
+<span class="code-green">["Python", "React"]</span>,<br>
+
+&nbsp;&nbsp;<span class="code-white">integrations</span>:
+<span class="code-green">["REST", "APIs", "AI"]</span>,<br>
+
+&nbsp;&nbsp;<span class="code-white">focus</span>:
+<span class="code-orange">"Automation"</span><br>
+
+};
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</header>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+<div class="container stats-grid">
+
+    <div class="stat">
+        <strong>15+</strong>
+        <span>Years Development</span>
+    </div>
+
+    <div class="stat">
+        <strong>PHP</strong>
+        <span>Backend Expertise</span>
+    </div>
+
+    <div class="stat">
+        <strong>Python</strong>
+        <span>Automation</span>
+    </div>
+
+    <div class="stat">
+        <strong>AI + APIs</strong>
+        <span>Modern Workflows</span>
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- SERVICES -->
+
+<section id="services">
+
+<div class="container">
+
+    <div class="section-label">What I Do</div>
+
+    <h2 class="section-title">
+        Development support without the overhead.
+    </h2>
+
+    <p class="section-intro">
+        Need an experienced developer for a small fix, an integration,
+        maintenance work or an automation project? I can work independently
+        and integrate with an existing team.
+    </p>
+
+
+    <div class="services-grid">
+
+        <div class="card">
+            <div class="icon">⌘</div>
+            <h3>PHP & Backend</h3>
+            <p>
+                PHP, MySQL, backend maintenance, existing applications,
+                debugging and feature development.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">◈</div>
+            <h3>WordPress & Web</h3>
+            <p>
+                WordPress, custom websites, JavaScript, Ajax,
+                CMS maintenance and practical web fixes.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">↗</div>
+            <h3>API Integration</h3>
+            <p>
+                REST APIs, payment services, Salesforce, Google Maps,
+                PayPal and third-party service integrations.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">⚙</div>
+            <h3>Python Automation</h3>
+            <p>
+                Automate repetitive workflows, data processing,
+                document generation and business processes.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">✦</div>
+            <h3>AI Integration</h3>
+            <p>
+                AI-powered workflows, LLM APIs, automated content
+                generation and practical AI tooling.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">▣</div>
+            <h3>React & Frontend</h3>
+            <p>
+                React interfaces, JavaScript fixes, frontend integration
+                and improvements to existing applications.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- PROJECTS -->
+
+<section id="projects">
+
+<div class="container">
+
+    <div class="section-label">Selected Work</div>
+
+    <h2 class="section-title">
+        Building systems, not just writing code.
+    </h2>
+
+    <p class="section-intro">
+        Recent independent work combines software development,
+        automation, AI services and production workflows.
+    </p>
+
+
+    <div class="projects">
+
+        <div class="project">
+
+            <div class="project-number">01 / AUTOMATION</div>
+
+            <h3>AI & Python Automation</h3>
+
+            <p>
+                Python-based automation workflows combining AI services,
+                APIs, validation and automated production processes.
+            </p>
+
+            <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">AI APIs</span>
+                <span class="tag">Automation</span>
+                <span class="tag">APIs</span>
+            </div>
+
+        </div>
+
+
+        <div class="project">
+
+            <div class="project-number">02 / PUBLISHING</div>
+
+            <h3>Automated Publishing System</h3>
+
+            <p>
+                Automated production pipeline for generating structured
+                content, validating data, producing print-ready PDFs
+                and preparing book assets.
+            </p>
+
+            <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">PDF</span>
+                <span class="tag">QA</span>
+            </div>
+
+        </div>
+
+
+        <div class="project">
+
+            <div class="project-number">03 / CHESS TECHNOLOGY</div>
+
+            <h3>Chess Puzzle Automation</h3>
+
+            <p>
+                Automated chess-content workflows involving structured
+                positions, engine validation, solution checking,
+                diagram generation and book production.
+            </p>
+
+            <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">Stockfish</span>
+                <span class="tag">Automation</span>
+                <span class="tag">Validation</span>
+            </div>
+
+        </div>
+
+
+        <div class="project">
+
+            <div class="project-number">04 / WEB DEVELOPMENT</div>
+
+            <h3>PHP & API Applications</h3>
+
+            <p>
+                Long-term experience building and maintaining database-backed
+                websites and integrating external services and APIs.
+            </p>
+
+            <div class="tags">
+                <span class="tag">PHP</span>
+                <span class="tag">MySQL</span>
+                <span class="tag">REST</span>
+                <span class="tag">WordPress</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- EXPERIENCE -->
+
+<section id="experience">
+
+<div class="container">
+
+    <div class="section-label">Experience</div>
+
+    <h2 class="section-title">
+        Experienced with real-world web projects.
+    </h2>
+
+    <p class="section-intro">
+        A long background in client-focused development, now combined
+        with modern automation and AI tooling.
+    </p>
+
+
+    <div class="experience">
+
+        <div class="experience-item">
+
+            <div class="experience-date">2009 — 2024</div>
+
+            <h3>Senior PHP Developer</h3>
+
+            <div class="experience-company">
+                RexDirect · USA
+            </div>
+
+            <p>
+                Developed and maintained web applications, integrated
+                third-party APIs, built backend components, translated
+                client requirements into implementation plans and managed
+                development work through final delivery.
+            </p>
+
+        </div>
+
+
+        <div class="experience-item">
+
+            <div class="experience-date">2005 — 2009</div>
+
+            <h3>Junior PHP Developer / Freelance Developer</h3>
+
+            <div class="experience-company">
+                Freelancer.com · India
+            </div>
+
+            <p>
+                Delivered client website projects and worked with PHP,
+                WordPress, Magento, Drupal, osCommerce, PayPal,
+                CodeIgniter and custom-developed websites.
+            </p>
+
+        </div>
+
+
+        <div class="experience-item">
+
+            <div class="experience-date">CURRENT</div>
+
+            <h3>Independent Developer & Automation Builder</h3>
+
+            <div class="experience-company">
+                NatarajanDev
+            </div>
+
+            <p>
+                Building Python automation, AI-assisted development
+                workflows, API integrations, document-generation systems
+                and automated digital production pipelines.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- WHY -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-label">Why Work With Me</div>
+
+    <h2 class="section-title">
+        A practical development partner.
+    </h2>
+
+    <p class="section-intro">
+        Particularly useful when your internal team has more work than
+        available development capacity.
+    </p>
+
+
+    <div class="why-grid">
+
+        <div class="why-item">
+            <span class="check">✓</span>
+            15+ years of practical web-development experience
+        </div>
+
+        <div class="why-item">
+            <span class="check">✓</span>
+            Comfortable working with existing and legacy systems
+        </div>
+
+        <div class="why-item">
+            <span class="check">✓</span>
+            Independent, remote and asynchronous working style
+        </div>
+
+        <div class="why-item">
+            <span class="check">✓</span>
+            Small fixes through complete development tasks
+        </div>
+
+        <div class="why-item">
+            <span class="check">✓</span>
+            Strong API and backend integration experience
+        </div>
+
+        <div class="why-item">
+            <span class="check">✓</span>
+            Modern Python, AI and automation capabilities
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+<div class="container">
+
+    <div class="cta">
+
+        <div class="section-label">Let's Work Together</div>
+
+        <h2 class="section-title">
+            Have a development backlog?
+        </h2>
+
+        <p class="section-intro">
+            Send me a small task first. If I can solve it effectively,
+            we can discuss ongoing development or overflow support.
+        </p>
+
+        <a href="mailto:iconsisonline@yahoo.com"
+           class="btn btn-primary">
+            Contact Natarajan →
+        </a>
+
+        <br>
+
+        <a href="mailto:iconsisonline@yahoo.com"
+           class="contact-email">
+            iconsisonline@yahoo.com
+        </a>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<div class="container footer-inner">
+
+    <div>
+        © 2026 NatarajanDev. All rights reserved.
+    </div>
+
+    <div>
+        <a href="https://github.com/NatarajanDev" target="_blank">
+            GitHub
+        </a>
+        &nbsp; · &nbsp;
+        <a href="mailto:iconsisonline@yahoo.com">
+            Email
+        </a>
+    </div>
+
+</div>
+
+</footer>
+
+</body>
+</html>
