@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://natarajandev.github.io/</loc></url>
+  <url><loc>https://natarajandev.github.io/portfolio.html</loc></url>
   <url><loc>https://natarajandev.github.io/resume.html</loc></url>
+  <url><loc>https://natarajandev.github.io/examples/</loc></url>
+  <url><loc>https://natarajandev.github.io/examples/business-dashboard.html</loc></url>
+  <url><loc>https://natarajandev.github.io/examples/chess-puzzle.html</loc></url>
+  <url><loc>https://natarajandev.github.io/examples/kdp-factory.html</loc></url>
+  <url><loc>https://natarajandev.github.io/examples/api-monitor.html</loc></url>
 </urlset>
