@@ -1,0 +1,8 @@
+{
+  "title": "100 Chess Puzzles",
+  "subtitle": "A document-generation demo",
+  "sections": [
+    {"heading": "Introduction", "body": "This sample demonstrates structured metadata flowing into a PDF generator."},
+    {"heading": "Practice", "body": "Production systems can replace this section with validated puzzle records, diagrams, and solutions."}
+  ]
+}
