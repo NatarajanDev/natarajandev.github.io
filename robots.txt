@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://natarajandev.github.io/sitemap.xml
