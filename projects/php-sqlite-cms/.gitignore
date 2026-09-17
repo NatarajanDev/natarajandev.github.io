@@ -1,0 +1,29 @@
+# Runtime state — never committed.
+
+# SQLite database and journals (created by the installer).
+/storage/*.sqlite
+/storage/*.sqlite-journal
+/storage/*.sqlite-wal
+/storage/*.sqlite-shm
+
+# Logs, cache and session files.
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+
+# Uploaded media (created at runtime by the media library).
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Local configuration overrides and any stray secrets.
+/config/config.local.php
+.env
+.env.local
+
+# OS / editor noise.
+.DS_Store
+Thumbs.db
+*.log

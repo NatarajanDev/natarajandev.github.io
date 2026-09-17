@@ -1,0 +1,108 @@
+name: PHP CMS CI
+
+on:
+  push:
+    paths:
+      - 'projects/php-sqlite-cms/**'
+      - '.github/workflows/php-sqlite-cms.yml'
+  pull_request:
+    paths:
+      - 'projects/php-sqlite-cms/**'
+      - '.github/workflows/php-sqlite-cms.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Lint, test and smoke-run
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/php-sqlite-cms
+    env:
+      CMS_ENV: testing
+      CMS_DEBUG: 'true'
+      CMS_URL: http://127.0.0.1:8099
+      CMS_TIMEZONE: UTC
+      CMS_DB_PATH: ${{ github.workspace }}/projects/php-sqlite-cms/storage/cms.sqlite
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite, sqlite3, gd, fileinfo
+          coverage: none
+
+      - name: Show environment
+        run: php -v && php -m | grep -iE 'pdo_sqlite|sqlite3|mbstring|gd|fileinfo'
+
+      - name: Lint every PHP file
+        run: |
+          failures=0
+          while IFS= read -r -d '' file; do
+            php -l "$file" >/dev/null || { echo "::error file=$file::Syntax error"; failures=1; }
+          done < <(find . -type f -name '*.php' -not -path './vendor/*' -print0)
+          echo "linted $(find . -type f -name '*.php' | wc -l) files"
+          exit $failures
+
+      - name: Run the test suite
+        run: php tests/run.php
+
+      - name: Install and seed demo content
+        run: |
+          mkdir -p storage/logs storage/cache storage/sessions public/uploads
+          php bin/install.php --name="CI Admin" --email=ci@example.com --password=ci-password-123 --demo
+
+      - name: Smoke test the HTTP surface
+        run: |
+          php -S 127.0.0.1:8099 -t public public/router.php > storage/server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8099/ >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+
+          check () { # name url expected_status grep_pattern
+            local status body
+            status=$(curl -s -o /tmp/body -w '%{http_code}' "http://127.0.0.1:8099$2")
+            body=$(cat /tmp/body)
+            if [ "$status" != "$3" ]; then
+              echo "::error::$1 — expected HTTP $3, got $status"; tail -30 storage/server.log; exit 1
+            fi
+            if [ -n "$4" ] && ! grep -q "$4" /tmp/body; then
+              echo "::error::$1 — response did not contain '$4'"; exit 1
+            fi
+            echo "✓ $1 ($status)"
+          }
+
+          check "home page"          "/"                        200 "Nova CMS"
+          check "blog index"         "/posts"                   200 "Articles"
+          check "rss feed"           "/feed.xml"                200 "<rss"
+          check "json feed"          "/feed.json"               200 "jsonfeed.org"
+          check "sitemap"            "/sitemap.xml"             200 "<urlset"
+          check "robots"             "/robots.txt"              200 "Sitemap:"
+          check "search api"         "/api/search?q=sqlite"     200 '"data"'
+          check "search page"        "/search?q=sqlite"         200 "Search"
+          check "admin guard"        "/admin"                   302 ""
+
+          # Sign in through the real login form (session cookie + CSRF token).
+          curl -s -c /tmp/cookies.txt http://127.0.0.1:8099/admin/login -o /tmp/login.html
+          token=$(grep -o 'name="_token" value="[^"]*"' /tmp/login.html | head -1 | sed 's/.*value="//;s/"$//')
+          [ -n "$token" ] || { echo "::error::login form did not render a CSRF token"; exit 1; }
+          status=$(curl -s -b /tmp/cookies.txt -c /tmp/cookies.txt -o /dev/null -w '%{http_code}' \
+            -d "_token=$token" -d "email=ci@example.com" -d "password=ci-password-123" \
+            http://127.0.0.1:8099/admin/login)
+          [ "$status" = "302" ] || { echo "::error::admin login failed (HTTP $status)"; tail -30 storage/server.log; exit 1; }
+          echo "✓ admin login (302)"
+
+          check "dashboard"          "/admin"                   200 "Dashboard"
+          check "posts list"         "/admin/posts"             200 "Posts"
+          check "media library"      "/admin/media"             200 "Media"
+          check "settings"           "/admin/settings"          200 "Settings"
+          check "comments queue"     "/admin/comments"          200 "Comments"
+          check "tools"              "/admin/tools"             200 "Tools"
+
+      - name: Surface server log on failure
+        if: failure()
+        run: tail -60 storage/server.log || true
