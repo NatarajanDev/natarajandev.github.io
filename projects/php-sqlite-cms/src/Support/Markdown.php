@@ -83,10 +83,10 @@ final class Markdown
                 continue;
             }
 
-            if (preg_match('/^\s*>\s?(.*)$/', $line) === 1) {
+            if (preg_match('/^\s*(?:>|&gt;)\s?(.*)$/', $line) === 1) {
                 $closeLists();
                 $buffer = [];
-                while ($index < $count && preg_match('/^\s*>\s?(.*)$/', $lines[$index], $m) === 1) {
+                while ($index < $count && preg_match('/^\s*(?:>|&gt;)\s?(.*)$/', $lines[$index], $m) === 1) {
                     $buffer[] = trim($m[1]);
                     $index++;
                 }

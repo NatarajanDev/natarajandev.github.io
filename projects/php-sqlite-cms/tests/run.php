@@ -409,7 +409,19 @@ suite('repository/posts', function (): void {
     Assert::truthy(count($posts->featured(3)) >= 1, 'featured posts');
     Assert::truthy(count($posts->latestForAdmin(3)) >= 1, 'admin latest posts');
     Assert::truthy(count($posts->adjacent($posts->find($postId))) === 2, 'adjacent posts');
-    Assert::truthy(count($posts->related($posts->find($postId), 2)) >= 1, 'related posts');
+    $siblingId = $posts->create([
+        'user_id' => $authorId,
+        'category_id' => (int) $category['id'],
+        'title' => 'Related sibling article',
+        'slug' => $posts->uniqueSlug('Related sibling article'),
+        'content' => 'Sibling body',
+        'status' => 'published',
+        'published_at' => (new DateTimeImmutable('-12 hours'))->format('Y-m-d H:i:s'),
+    ]);
+    $related = $posts->related($posts->find($postId), 3);
+    Assert::same(1, count($related), 'related posts share a category');
+    Assert::same($siblingId, (int) $related[0]['id'], 'related posts exclude the article itself');
+    $posts->delete($siblingId);
 
     Assert::same(1, $posts->deleteMany([$draftId]), 'bulk delete');
     Assert::same(null, $posts->find($draftId), 'deleted post is gone');
@@ -526,7 +538,7 @@ suite('service/installer+auth', function (): void {
 
     $adminId = $installer->createAdmin('Site Owner', 'owner@example.com', 'super-secret-1');
     Assert::truthy($adminId > 0, 'administrator created');
-    Assert::same(1, $app->db()->scalar('SELECT COUNT(*) FROM users WHERE role = ?', ['admin']), 'admin role assigned');
+    Assert::same('admin', (string) $app->db()->scalar('SELECT role FROM users WHERE id = ?', [$adminId]), 'admin role assigned');
 
     $hash = (string) $app->db()->scalar('SELECT password_hash FROM users WHERE id = ?', [$adminId]);
     Assert::falsy($hash === 'super-secret-1', 'passwords are never stored in plain text');

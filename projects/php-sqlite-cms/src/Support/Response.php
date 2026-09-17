@@ -35,7 +35,7 @@ final class Response
     public static function json(mixed $data, int $status = 200): self
     {
         return new self(
-            (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+            (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
             $status,
             ['Content-Type' => 'application/json; charset=utf-8']
         );

@@ -48,7 +48,7 @@ final class Cache
     public function put(string $key, mixed $value, int $ttl = 3600): void
     {
         $payload = serialize([
-            'expires' => $ttl <= 0 ? 0 : time() + $ttl,
+            'expires' => $ttl === 0 ? 0 : time() + $ttl,
             'value' => $value,
         ]);
 

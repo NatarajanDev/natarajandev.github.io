@@ -129,7 +129,7 @@ final class Auth
 
     public function login(array $user, bool $remember = false): void
     {
-        session_regenerate_id(true);
+        $this->regenerateSession();
         $_SESSION[self::SESSION_KEY] = (int) $user['id'];
         $_SESSION['auth_time'] = time();
         $this->user = $user;
@@ -153,7 +153,30 @@ final class Auth
         unset($_SESSION[self::SESSION_KEY], $_SESSION['auth_time']);
         $this->user = null;
         $this->resolved = true;
-        session_regenerate_id(true);
+        $this->regenerateSession();
+    }
+
+    /** Rotate the session id when the SAPI can still write headers. */
+    private function regenerateSession(): void
+    {
+        if (session_status() === PHP_SESSION_ACTIVE && !headers_sent()) {
+            session_regenerate_id(true);
+        }
+    }
+
+    /**
+     * Send a cookie, tolerating environments where output has already started
+     * (CLI tools and tests, and hosts with early output).
+     *
+     * @param array<string, mixed> $options
+     */
+    private function sendCookie(string $name, string $value, array $options): void
+    {
+        if (headers_sent()) {
+            return;
+        }
+
+        setcookie($name, $value, $options);
     }
 
     /** Number of failed attempts left before the account is temporarily locked. */
@@ -200,7 +223,7 @@ final class Auth
             $expires
         );
 
-        setcookie(self::REMEMBER_COOKIE, $selector . ':' . $validator, [
+        $this->sendCookie(self::REMEMBER_COOKIE, $selector . ':' . $validator, [
             'expires' => (int) (new \DateTimeImmutable('+30 days'))->getTimestamp(),
             'path' => '/',
             'httponly' => true,
@@ -246,7 +269,7 @@ final class Auth
     {
         if (isset($_COOKIE[self::REMEMBER_COOKIE])) {
             unset($_COOKIE[self::REMEMBER_COOKIE]);
-            setcookie(self::REMEMBER_COOKIE, '', ['expires' => time() - 3600, 'path' => '/']);
+            $this->sendCookie(self::REMEMBER_COOKIE, '', ['expires' => time() - 3600, 'path' => '/']);
         }
     }
 }

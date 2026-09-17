@@ -186,6 +186,10 @@ final class UserRepository extends Repository
 
     public function pruneAttempts(int $days = 30): int
     {
+        if ($days <= 0) {
+            return $this->db->delete('login_attempts', '1 = 1');
+        }
+
         return $this->db->delete(
             'login_attempts',
             'created_at < ?',
