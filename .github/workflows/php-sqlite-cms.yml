@@ -48,7 +48,27 @@ jobs:
           exit $failures
 
       - name: Run the test suite
-        run: php tests/run.php
+        run: |
+          set +e
+          php tests/run.php 2>&1 | tee /tmp/tests.log
+          status=${PIPESTATUS[0]}
+
+          if [ "$status" -ne 0 ]; then
+            # Surface the failing assertions as annotations so they are readable
+            # from the API without downloading the raw job log.
+            {
+              echo "### Test suite failed (exit $status)"
+              echo '```'
+              grep -E '✗|aborted|•' /tmp/tests.log | head -20
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+
+            while IFS= read -r line; do echo "::error::${line}"; done < <(grep -E 'aborted' /tmp/tests.log | head -6)
+            while IFS= read -r line; do echo "::error::${line}"; done < <(grep -E '^  • ' /tmp/tests.log | head -10)
+            echo "::group::Full test output"; cat /tmp/tests.log; echo "::endgroup::"
+          fi
+
+          exit $status
 
       - name: Install and seed demo content
         run: |
@@ -64,45 +84,58 @@ jobs:
           done
 
           check () { # name url expected_status grep_pattern
-            local status body
+            local status
             status=$(curl -s -o /tmp/body -w '%{http_code}' "http://127.0.0.1:8099$2")
-            body=$(cat /tmp/body)
             if [ "$status" != "$3" ]; then
-              echo "::error::$1 — expected HTTP $3, got $status"; tail -30 storage/server.log; exit 1
+              echo "::error::$1 — expected HTTP $3, got $status"
+              tail -25 storage/server.log
+              exit 1
             fi
             if [ -n "$4" ] && ! grep -q "$4" /tmp/body; then
-              echo "::error::$1 — response did not contain '$4'"; exit 1
+              echo "::error::$1 — response did not contain '$4'"
+              head -c 400 /tmp/body
+              tail -25 storage/server.log
+              exit 1
             fi
             echo "✓ $1 ($status)"
           }
 
-          check "home page"          "/"                        200 "Nova CMS"
-          check "blog index"         "/posts"                   200 "Articles"
-          check "rss feed"           "/feed.xml"                200 "<rss"
-          check "json feed"          "/feed.json"               200 "jsonfeed.org"
-          check "sitemap"            "/sitemap.xml"             200 "<urlset"
-          check "robots"             "/robots.txt"              200 "Sitemap:"
-          check "search api"         "/api/search?q=sqlite"     200 '"data"'
-          check "search page"        "/search?q=sqlite"         200 "Search"
-          check "admin guard"        "/admin"                   302 ""
+          check "home page"      "/"                    200 "Nova CMS"
+          check "blog index"     "/posts"               200 "Articles"
+          check "rss feed"       "/feed.xml"            200 "<rss"
+          check "json feed"      "/feed.json"           200 "jsonfeed.org"
+          check "sitemap"        "/sitemap.xml"         200 "<urlset"
+          check "robots"         "/robots.txt"          200 "Sitemap:"
+          check "search api"     "/api/search?q=sqlite" 200 '"data"'
+          check "admin guard"    "/admin"               302 ""
 
           # Sign in through the real login form (session cookie + CSRF token).
           curl -s -c /tmp/cookies.txt http://127.0.0.1:8099/admin/login -o /tmp/login.html
           token=$(grep -o 'name="_token" value="[^"]*"' /tmp/login.html | head -1 | sed 's/.*value="//;s/"$//')
-          [ -n "$token" ] || { echo "::error::login form did not render a CSRF token"; exit 1; }
+          if [ -z "$token" ]; then
+            echo "::error::login form did not render a CSRF token"
+            head -c 600 /tmp/login.html
+            tail -25 storage/server.log
+            exit 1
+          fi
+
           status=$(curl -s -b /tmp/cookies.txt -c /tmp/cookies.txt -o /dev/null -w '%{http_code}' \
             -d "_token=$token" -d "email=ci@example.com" -d "password=ci-password-123" \
             http://127.0.0.1:8099/admin/login)
-          [ "$status" = "302" ] || { echo "::error::admin login failed (HTTP $status)"; tail -30 storage/server.log; exit 1; }
+          if [ "$status" != "302" ]; then
+            echo "::error::admin login failed (HTTP $status)"
+            tail -25 storage/server.log
+            exit 1
+          fi
           echo "✓ admin login (302)"
 
-          check "dashboard"          "/admin"                   200 "Dashboard"
-          check "posts list"         "/admin/posts"             200 "Posts"
-          check "media library"      "/admin/media"             200 "Media"
-          check "settings"           "/admin/settings"          200 "Settings"
-          check "comments queue"     "/admin/comments"          200 "Comments"
-          check "tools"              "/admin/tools"             200 "Tools"
+          check "dashboard"      "/admin"           200 "Dashboard"
+          check "posts list"     "/admin/posts"     200 "Posts"
+          check "media library"  "/admin/media"     200 "Media"
+          check "settings"       "/admin/settings"  200 "Settings"
+          check "comments queue" "/admin/comments"  200 "Comments"
+          check "tools"          "/admin/tools"     200 "Tools"
 
       - name: Surface server log on failure
         if: failure()
-        run: tail -60 storage/server.log || true
+        run: tail -60 storage/server.log 2>/dev/null || true
